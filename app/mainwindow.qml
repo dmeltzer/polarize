@@ -44,16 +44,19 @@ Controls.ApplicationWindow {
     }
 
     ColumnLayout {
+        width: 400
+        height: 400
         spacing: 1
-//        width: 450
-//        height: 400
+        Layout.preferredHeight: parent.height
+        Layout.preferredWidth: parent.width
 
         RowLayout {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
             Layout.preferredHeight: 100
-            Layout.preferredWidth: 300
-            id: inputLayout
+            Layout.preferredWidth: 400
             PointInput {
-                id: "sourceInput"
+                id: sourceinput
                 objectName: "sourceInput"
                 title: "Source"
                 width: 200
@@ -61,7 +64,7 @@ Controls.ApplicationWindow {
             }
 
             PointInput {
-                id: "targetInput"
+                id: targetinput
                 objectName: "targetInput"
                 title: "Target"
                 width: 200
@@ -73,33 +76,44 @@ Controls.ApplicationWindow {
             id: calculate
             text: qsTr("Calculate")
             checkable: false
-//            onClicked: window.calculate(sourceInput.values(),
-//                                        targetInput.values())
-            onClicked: _demo.output(sourceInput.values(), targetInput.values());
+            onClicked: _demo.output(sourceinput.values(), targetinput.values());
         }
 
         ColumnLayout {
             id: bigOutputLayout
-            Layout.preferredHeight: 100
-            Layout.preferredWidth: 100
+            Layout.fillHeight: false
+            Layout.fillWidth: true
+            width: parent.width
+            spacing: 0
+            Layout.preferredHeight: parent.height / 2
+            Layout.preferredWidth: parent.width
 
 
             Text {
                 id: output_text
                 text: qsTr("Result")
+                Layout.fillWidth: true
+                Layout.fillHeight: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
                 font.pixelSize: 18
             }
             RowLayout {
                 id: outputLayout
-                width: 306
-                height: 100
+                width: parent.width
+                height: parent.height
+                Layout.fillWidth: true
+                Layout.rowSpan: 1
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                spacing: 10
+                Layout.fillHeight: true
 
                 ColumnLayout {
                     id: panLayout
-                    width: 100
+                    width: parent.width
                     height: 100
+                    Layout.preferredWidth: -1
+                    Layout.fillWidth: false
 
                     Text {
                         id: output_panLabel
@@ -107,30 +121,28 @@ Controls.ApplicationWindow {
                         font.pixelSize: 12
                     }
 
-                    TextEdit {
+                    Controls.TextField {
                         id: output_panEdit
-                        width: 80
-                        height: 20
-                        text: qsTr("Text Edit")
+                        text: _demo.pan.toFixed(2)
+                        readOnly: true
                         font.pixelSize: 12
                     }
                 }
 
                 ColumnLayout {
                     id: tiltLayout
-                    width: 100
-                    height: 100
                     Text {
                         id: output_tiltLabel
                         text: qsTr("Tilt")
                         font.pixelSize: 12
                     }
 
-                    TextEdit {
+                    Controls.TextField {
                         id: output_tiltEdit1
-                        width: 80
-                        height: 20
-                        text: qsTr("Text Edit")
+                        text: _demo.tilt.toFixed(2)
+                        Layout.columnSpan: 1
+                        Layout.preferredWidth: -1
+                        readOnly: true
                         font.pixelSize: 12
                     }
                 }

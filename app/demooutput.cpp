@@ -1,6 +1,9 @@
 #include "demooutput.h"
 
-DemoOutput::DemoOutput(QObject *parent) : QObject(parent)
+DemoOutput::DemoOutput(QObject *parent)
+    : QObject(parent)
+    , m_pan(0)
+    , m_tilt(0)
 {
 
 
@@ -43,5 +46,7 @@ DemoOutput::output(const QStringList &source, const QStringList &target)
     QVector3D calculatedVector = targetPoint - sourcePoint;
 
     PolarPoint dest(calculatedVector);
+    setPan(dest.pan());
+    setTilt(dest.tilt());
     qDebug() << "Pan: " << dest.pan() << "Tilt: " << dest.tilt();
 }
