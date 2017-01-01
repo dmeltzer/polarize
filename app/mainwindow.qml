@@ -92,9 +92,10 @@ Controls.ApplicationWindow {
             Text {
                 id: output_text
                 text: qsTr("Result")
+                Layout.alignment: Qt.AlignLeft | Qt.AlignBaseline
                 Layout.fillWidth: true
                 Layout.fillHeight: false
-                verticalAlignment: Text.AlignVCenter
+                verticalAlignment: Text.AlignBottom
                 horizontalAlignment: Text.AlignHCenter
                 font.pixelSize: 18
             }

@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     DemoOutput *d = new DemoOutput;
     engine->rootContext()->setContextProperty("_demo", d);
     // actually load QML file:
-    engine->load(QUrl(QStringLiteral("/Users/parallelgrapefruit/work/polarize/app/mainwindow.qml")));
+    engine->load(QUrl(QStringLiteral("qrc:/mainwindow.qml")));
     QSettings independentSettings;
 
     QRect windowGeometry = independentSettings.value("windowGeometry").toRect();

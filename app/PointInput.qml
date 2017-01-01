@@ -3,7 +3,6 @@ import QtQuick.Controls 1.4 as Controls
 import QtQuick.Layouts 1.1
 
 Rectangle {
-    color: "red"
     property string title
 
     function values() {

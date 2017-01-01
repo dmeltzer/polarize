@@ -2,7 +2,10 @@
 #define POLARPOINT_H
 #include <QVector3D>
 #include <QString>
-class PolarPoint
+
+#include "polarize-lib_global.h"
+
+class POLARIZELIBSHARED_EXPORT PolarPoint
 {
 public:
     PolarPoint();
