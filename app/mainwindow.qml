@@ -148,6 +148,33 @@ Controls.ApplicationWindow {
                     }
                 }
             }
+
+            RowLayout {
+                Controls.CheckBox {
+                    id: enableOSC
+                    pressed: _demo.oscEnabled
+                    text: qsTr("Enable OSC Output")
+                    onClicked: _demo.oscEnabled = enableOSC.checked
+                }
+            }
+            RowLayout {
+                Text {
+                    id: channelOutput_Label
+                    text: qsTr("Channel:")
+                    font.pixelSize: 12
+                }
+
+                Controls.TextField {
+                    id: channelOutput
+                    text: _demo.channel
+                    Layout.columnSpan: 1
+                    Layout.preferredWidth: -1
+                    readOnly: false
+                    onEditingFinished: _demo.channel = channelOutput.text
+                    font.pixelSize: 12
+                }
+            }
+
         }
     }
 
@@ -155,5 +182,6 @@ Controls.ApplicationWindow {
         target: calculate
         onClicked: print("clicked")
     }
+
 
 }

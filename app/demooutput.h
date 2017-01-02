@@ -28,8 +28,11 @@ class DemoOutput : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(qreal pan READ pan WRITE setPan NOTIFY panChanged)
-
     Q_PROPERTY(qreal tilt READ tilt WRITE setTilt NOTIFY tiltChanged)
+    Q_PROPERTY(qreal channel READ channel WRITE setChannel NOTIFY channelChanged)
+    Q_PROPERTY(bool oscEnabled READ oscEnabled WRITE setOscEnabled NOTIFY oscEnabledChanged)
+
+
 public:
     explicit DemoOutput(QObject *parent = 0);
     Q_INVOKABLE void output(const QStringList &source, const QStringList &target);
@@ -37,20 +40,38 @@ public:
     void setPan(qreal pan ) { if(m_pan != pan) m_pan = pan; emit panChanged(); }
     qreal tilt() { return m_tilt; }
     void setTilt(qreal tilt) {if(m_tilt !=tilt) m_tilt = tilt; emit tiltChanged(); }
+    qint32 channel() { return m_channel; }
+    void setChannel(qint32 channel) {
+        if(m_channel !=channel) {
+            qDebug() <<"Channel Changed: " << channel;
+            m_channel = channel;
+        }
+        emit channelChanged();
+    }
+
+    bool oscEnabled() { return m_oscEnabled; }
+    void setOscEnabled(bool oscEnabled) {
+        if(m_oscEnabled !=oscEnabled)
+            m_oscEnabled = oscEnabled;
+        emit oscEnabledChanged(); }
 
 signals:
     void panChanged();
     void tiltChanged();
+    void channelChanged();
+    void oscEnabledChanged();
+
 
 public slots:
     void calculate(const QVariant &source, const QVariant &target) {
         qDebug() << source << " and " << target;
-//        QVariantList list = source;
     }
 
 private:
     qreal m_pan;
     qreal m_tilt;
+    qint32 m_channel;
+    bool m_oscEnabled;
     OSCNetworkManager *m_manager;
 };
 

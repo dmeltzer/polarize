@@ -23,6 +23,8 @@ DemoOutput::DemoOutput(QObject *parent)
     : QObject(parent)
     , m_pan(0)
     , m_tilt(0)
+    , m_channel(1)
+    , m_oscEnabled(false)
     , m_manager(0)
 {
     m_manager = new OSCNetworkManager;
@@ -34,7 +36,10 @@ DemoOutput::DemoOutput(QObject *parent)
 void
 DemoOutput::output(const QStringList &source, const QStringList &target)
 {
-    qDebug() << "TRIGERED: " << source << " TARGET: " << target;
+    if(!m_oscEnabled) {
+        qDebug() << "Output not enabled, aborting";
+        return;
+    }
     QVector3D sourcePoint(source[0].toFloat(), source[1].toFloat(), source[2].toFloat());
     QVector3D targetPoint(target[0].toFloat(), target[1].toFloat(), target[2].toFloat());
 
@@ -42,10 +47,10 @@ DemoOutput::output(const QStringList &source, const QStringList &target)
 
     PolarPoint dest(calculatedVector);
     setPan(dest.pan());
-    const QString panCmd = QString("/eos/user/0/chan/1/param/pan=%1").arg(dest.pan());
+    const QString panCmd = QString("/eos/user/0/chan/%1/param/pan=%2").arg(m_channel).arg(dest.pan());
     m_manager->sendMessage(panCmd);
 
-    const QString tiltCmd = QString("/eos/user/0/chan/1/param/tilt=%1").arg(dest.tilt());
+    const QString tiltCmd = QString("/eos/user/0/chan/%1/param/tilt=%2").arg(m_channel).arg(dest.tilt());
     m_manager->sendMessage(tiltCmd);
     setTilt(dest.tilt());
     qDebug() << "Pan: " << dest.pan() << "Tilt: " << dest.tilt();
