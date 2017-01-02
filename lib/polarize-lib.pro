@@ -24,13 +24,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += polarizelib.cpp \
     src/polarpoint.cpp \
-    src/terminalinput.cpp
+    src/terminalinput.cpp \
+    src/etc-osc/OSCMessage.cpp \
+    src/etc-osc/OSCNetworkManager.cpp \
+    src/etc-osc/OSCParser.cpp
 
 HEADERS += polarizelib.h\
         polarize-lib_global.h \
         src/polarpoint.h \
         src/inputinterface.h \
-        src/terminalinput.h
+        src/terminalinput.h \
+# From ETC S2L.
+        src/etc-osc/OSCMessage.h \
+        src/etc-osc/OSCNetworkManager.h \
+        src/etc-osc/OSCParser.h
+        src/etc-osc/utils.h
 
 unix {
     target.path = /usr/lib

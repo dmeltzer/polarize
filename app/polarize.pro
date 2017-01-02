@@ -10,11 +10,9 @@ TEMPLATE = app
 INCLUDEPATH += "$$PWD/../lib/"
 
 SOURCES += main.cpp \
-    mainapp.cpp \
     demooutput.cpp
 
 HEADERS += \
-    mainapp.h \
     demooutput.h
 
 DISTFILES += \

@@ -1,39 +1,34 @@
+/***************************************************************************
+** Polarize Positioning                                                   **
+**                                                                        **
+** Copyright (C) 2016-2017  Daniel Meltzer <dmeltzer.devel@gmail.com>     **
+**                                                                        **
+** This program is free software; you can redistribute it and/or modify   **
+** it under the terms of the GNU General Public License as published by   **
+** the Free Software Foundation; either version 3 of the License, or      **
+** (at your option) any later version.                                    **
+** This program is distributed in the hope that it will be useful,        **
+** but WITHOUT ANY WARRANTY; without even the implied warranty of         **
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          **
+** GNU General Public License for more details.                           **
+** You should have received a copy of the GNU General Public License      **
+** along with this program; if not, write to the Free Software Foundation,**
+** Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA      **
+***************************************************************************/
+
 #include "demooutput.h"
 
+#include <QHostAddress>
 DemoOutput::DemoOutput(QObject *parent)
     : QObject(parent)
     , m_pan(0)
     , m_tilt(0)
+    , m_manager(0)
 {
-
-
-//    bool
-//    MainApp::loadPlugins()
-//    {
-//        QDir pluginsDir(qApp->applicationDirPath());
-//        #if defined(Q_OS_WIN)
-//            if (pluginsDir.dirName().toLower() == "debug" || pluginsDir.dirName().toLower() == "release")
-//                pluginsDir.cdUp();
-//        #elif defined(Q_OS_MAC)
-//            if (pluginsDir.dirName() == "MacOS") {
-//                pluginsDir.cdUp();
-//                pluginsDir.cdUp();
-//                pluginsDir.cdUp();
-//            }
-//        #endif
-//            pluginsDir.cd("plugins");
-//            foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
-//                QPluginLoader pluginLoader(pluginsDir.absoluteFilePath(fileName));
-//                QObject *plugin = pluginLoader.instance();
-//                if (plugin) {
-//                    m_input = qobject_cast<PolarizeInputInterface *>(plugin);
-//                    if (m_input)
-//                        return true;
-//                }
-//            }
-
-//            return false;
-//    }
+    m_manager = new OSCNetworkManager;
+    m_manager->setIpAddress(QHostAddress("127.0.0.1"));
+    m_manager->setUseTcp(true);
+    m_manager->setEnabled(true);
 }
 
 void
@@ -47,6 +42,11 @@ DemoOutput::output(const QStringList &source, const QStringList &target)
 
     PolarPoint dest(calculatedVector);
     setPan(dest.pan());
+    const QString panCmd = QString("/eos/user/0/chan/1/param/pan=%1").arg(dest.pan());
+    m_manager->sendMessage(panCmd);
+
+    const QString tiltCmd = QString("/eos/user/0/chan/1/param/tilt=%1").arg(dest.tilt());
+    m_manager->sendMessage(tiltCmd);
     setTilt(dest.tilt());
     qDebug() << "Pan: " << dest.pan() << "Tilt: " << dest.tilt();
 }
