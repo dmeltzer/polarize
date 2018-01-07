@@ -48,3 +48,15 @@ PolarPoint::tilt()
 {
     return m_phi * 180 / M_PI;
 }
+
+PolarPoint
+PolarPoint::toPoint(const PolarPoint &point)
+{
+    // Pan will be phi_cal - phi_trans
+    qreal newPhi = phi() - point.phi();
+    // Tilt will be theta_cal - theta_trans
+    qreal newTheta = theta() - point.theta();
+    // R will be r_cal - r_trans
+    qreal newR = R() - point.R();
+    return PolarPoint(newR, newTheta, newPhi);
+}

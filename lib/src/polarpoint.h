@@ -34,8 +34,14 @@ public:
     void setTheta(qreal theta) { m_theta = theta; }
     void setPhi( qreal phi ) { m_phi = phi; }
 
+    qreal R() const { return m_r; }
+    qreal theta() const { return m_theta; }
+    qreal phi() const { return m_phi; }
+
     qreal pan();
     qreal tilt();
+
+    PolarPoint toPoint(const PolarPoint &point);
 
 
     operator QString() const { return QString("R: %1 Theta: %2 Phi: %3").arg(m_r).arg(m_theta).arg(m_phi); }
