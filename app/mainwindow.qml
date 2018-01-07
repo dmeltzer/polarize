@@ -174,6 +174,23 @@ Controls.ApplicationWindow {
                     font.pixelSize: 12
                 }
             }
+            RowLayout {
+                Text {
+                    id: ipAddress_Label
+                    text: qsTr("Console IP:")
+                    font.pixelSize: 12
+                }
+
+                Controls.TextField {
+                    id: ipAddress
+                    text: _demo.ip
+                    Layout.columnSpan: 1
+                    Layout.preferredWidth: -1
+                    readOnly: false
+                    onEditingFinished: _demo.setIpAddress(ipAddress.text);
+                    font.pixelSize: 12
+                }
+            }
 
         }
     }

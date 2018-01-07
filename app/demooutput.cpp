@@ -24,11 +24,12 @@ DemoOutput::DemoOutput(QObject *parent)
     , m_pan(0)
     , m_tilt(0)
     , m_channel(1)
+    , m_ipAddress(QString("127.0.0.1"))
     , m_oscEnabled(false)
     , m_manager(0)
 {
     m_manager = new OSCNetworkManager;
-    m_manager->setIpAddress(QHostAddress("127.0.0.1"));
+    m_manager->setIpAddress(QHostAddress(m_ipAddress));
     m_manager->setUseTcp(true);
     m_manager->setEnabled(true);
 }
@@ -54,4 +55,15 @@ DemoOutput::output(const QStringList &source, const QStringList &target)
     m_manager->sendMessage(tiltCmd);
     setTilt(dest.tilt());
     qDebug() << "Pan: " << dest.pan() << "Tilt: " << dest.tilt();
+}
+
+void
+DemoOutput::setIpAddress(QString ipAddress)
+{
+    if(m_ipAddress!=ipAddress) {
+        qDebug() << "IP Changed: " << ipAddress;
+        m_ipAddress = ipAddress;
+        m_manager->setIpAddress(QHostAddress(ipAddress));
+    }
+    emit ipChanged();
 }

@@ -30,6 +30,7 @@ class DemoOutput : public QObject
     Q_PROPERTY(qreal pan READ pan WRITE setPan NOTIFY panChanged)
     Q_PROPERTY(qreal tilt READ tilt WRITE setTilt NOTIFY tiltChanged)
     Q_PROPERTY(qreal channel READ channel WRITE setChannel NOTIFY channelChanged)
+    Q_PROPERTY(QString ipAddress READ ipAddress WRITE setIpAddress NOTIFY channelChanged)
     Q_PROPERTY(bool oscEnabled READ oscEnabled WRITE setOscEnabled NOTIFY oscEnabledChanged)
 
 
@@ -49,6 +50,9 @@ public:
         emit channelChanged();
     }
 
+    QString ipAddress() { return m_ipAddress; }
+    Q_INVOKABLE void setIpAddress(QString ipAddress);
+
     bool oscEnabled() { return m_oscEnabled; }
     void setOscEnabled(bool oscEnabled) {
         if(m_oscEnabled !=oscEnabled)
@@ -59,18 +63,16 @@ signals:
     void panChanged();
     void tiltChanged();
     void channelChanged();
+    void ipChanged();
     void oscEnabledChanged();
 
 
-public slots:
-    void calculate(const QVariant &source, const QVariant &target) {
-        qDebug() << source << " and " << target;
-    }
 
 private:
     qreal m_pan;
     qreal m_tilt;
     qint32 m_channel;
+    QString m_ipAddress;
     bool m_oscEnabled;
     OSCNetworkManager *m_manager;
 };
