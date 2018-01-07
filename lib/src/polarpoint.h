@@ -20,6 +20,7 @@
 #define POLARPOINT_H
 #include <QVector3D>
 #include <QString>
+#include <QtMath>
 
 #include "polarize-lib_global.h"
 
@@ -27,7 +28,7 @@ class POLARIZELIBSHARED_EXPORT PolarPoint
 {
 public:
     PolarPoint();
-    PolarPoint(qreal r, qreal theta, qreal phi);
+    PolarPoint(qreal r, qreal theta, qreal phi, qreal minPan = -M_PI, qreal maxPan=M_PI);
     PolarPoint(const QVector3D &);
 
     void setR(qreal r) { m_r = r; }
@@ -38,17 +39,37 @@ public:
     qreal theta() const { return m_theta; }
     qreal phi() const { return m_phi; }
 
+    void setPan(const qreal degrees);
     qreal pan();
     qreal tilt();
+    void setTilt(const qreal degrees);
 
     PolarPoint toPoint(const PolarPoint &point);
 
+    qreal minTilt() const;
+    void setMinTilt(const qreal &value);
+
+    qreal minPan() const;
+    void setMinPan(const qreal &value);
+
+    qreal maxPan() const;
+    void setMaxPan(const qreal &value);
+
+    qreal maxTilt() const;
+    void setMaxTilt(const qreal &value);
 
     operator QString() const { return QString("R: %1 Theta: %2 Phi: %3").arg(m_r).arg(m_theta).arg(m_phi); }
+
 private:
     qreal m_r; // Radius, distance from point to point in a straight line
     qreal m_theta; // Azumith coordinate.  Represents Pan.
     qreal m_phi; // Inclination Coordinate.  Represents tilt
+
+    // Boundries
+    qreal m_minPan;
+    qreal m_maxPan;
+    qreal m_minTilt;
+    qreal m_maxTilt;
 };
 
 #endif // POLARPOINT_H

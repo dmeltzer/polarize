@@ -67,7 +67,8 @@ signals:
     void oscEnabledChanged();
 
 
-
+public slots:
+    void onMessageRecieved(OSCMessage message);
 private:
     qreal m_pan;
     qreal m_tilt;
@@ -75,6 +76,8 @@ private:
     QString m_ipAddress;
     bool m_oscEnabled;
     OSCNetworkManager *m_manager;
+
+    PolarPoint m_currentLocation;
 };
 
 #endif // DEMOOUTPUT_H

@@ -183,7 +183,7 @@ Controls.ApplicationWindow {
 
                 Controls.TextField {
                     id: ipAddress
-                    text: _demo.ip
+                    text: _demo.ipAddress
                     Layout.columnSpan: 1
                     Layout.preferredWidth: -1
                     readOnly: false
