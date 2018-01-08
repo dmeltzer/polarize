@@ -29,7 +29,7 @@ class POLARIZELIBSHARED_EXPORT PolarPoint
 public:
     PolarPoint();
     PolarPoint(qreal r, qreal theta, qreal phi, qreal minPan = -M_PI, qreal maxPan=M_PI);
-    PolarPoint(const QVector3D &);
+    PolarPoint(const QVector3D &, qreal minPan =-M_PI, qreal maxPan = M_PI);
 
     void setR(qreal r) { m_r = r; }
     void setTheta(qreal theta) { m_theta = theta; }
@@ -44,7 +44,7 @@ public:
     qreal tilt();
     void setTilt(const qreal degrees);
 
-    PolarPoint toPoint(const PolarPoint &point);
+    PolarPoint toPoint(PolarPoint point);
 
     qreal minTilt() const;
     void setMinTilt(const qreal &value);

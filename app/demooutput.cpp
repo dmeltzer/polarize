@@ -61,8 +61,11 @@ DemoOutput::output(const QStringList &source, const QStringList &target)
     qDebug() << "Source: " << sourcePoint << " Target: " << targetPoint;
 
     // We need to shift the source to 0.  This means we should subtract the source from each vector.
+    // Or maybe we don't need to do the translation?
     QVector3D translatedSource = sourcePoint - sourcePoint;
     QVector3D translatedTarget = targetPoint - sourcePoint;
+//    QVector3D translatedSource = sourcePoint;
+//    QVector3D translatedTarget = targetPoint;
 
     qDebug() << "Translated: ";
     qDebug() << "Source: " << translatedSource << " Target: " << translatedTarget;
@@ -70,15 +73,18 @@ DemoOutput::output(const QStringList &source, const QStringList &target)
 
     // Now lets calculate pan/tilt to the calibartion point -- And calculate the pan/tilt to it.  This should be current pan/tilt if things are working.
 //    PolarPoint p_current = PolarPoint(sourcePoint).toPoint(m_currentLocation);
-    PolarPoint p_current = m_currentLocation.toPoint(PolarPoint(sourcePoint));
+    PolarPoint p_source(translatedSource, m_currentLocation.minPan(), m_currentLocation.maxPan());
+    qDebug() << "SOURCE: " << p_source;
+    PolarPoint p_current = p_source.toPoint(m_currentLocation);
     qDebug() << "ORIGIN: Pan: " << p_current.pan() << "Tilt: " << p_current.tilt();
 
 
     // Polarize the target point and calculate source between the two.
-    PolarPoint p_translated(translatedTarget);
+    PolarPoint p_target(translatedTarget);
 
-    // This generates the adjustments in pan and tilt we need to make to the current location.
-    PolarPoint translatedVector = m_currentLocation.toPoint(p_translated);
+    // Now Calculate to new point
+    PolarPoint translatedVector = p_source.toPoint(p_target);
+    qDebug() << "TRANSLATION: Pan: " << translatedVector.pan() << "Tilt: " << translatedVector.tilt();
 
     qreal newPan = m_currentLocation.pan() + translatedVector.pan();
     qreal newTilt = m_currentLocation.tilt() + translatedVector.tilt();

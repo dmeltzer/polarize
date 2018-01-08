@@ -24,11 +24,11 @@ PolarPoint::PolarPoint(qreal r, qreal theta, qreal phi, qreal minPan, qreal maxP
     m_r = r;
     m_theta = theta;
     m_phi = phi;
-    m_maxPan = maxPan;
-    m_minPan = minPan;
+    setMaxPan(maxPan);
+    setMinPan(minPan);
 }
 
-PolarPoint::PolarPoint(const QVector3D &source)
+PolarPoint::PolarPoint(const QVector3D &source, qreal minPan, qreal maxPan)
 {
     m_r = qSqrt(
                      (source.x()*source.x())
@@ -37,38 +37,38 @@ PolarPoint::PolarPoint(const QVector3D &source)
                 );
     m_theta = qAcos(source.z()/m_r);
     m_phi = qAtan2(source.y(),source.x());
-    m_maxPan = M_PI;
-    m_minPan = -M_PI;
+    setMaxPan(maxPan);
+    setMinPan(minPan);
 }
 
 //Theta is Tilt
 qreal
-PolarPoint::tilt()
+PolarPoint::pan()
 {
     return qRadiansToDegrees(m_theta);
 }
 
 void
-PolarPoint::setTilt(const qreal degrees)
+PolarPoint::setPan(const qreal degrees)
 {
     m_theta = qDegreesToRadians(degrees);
 }
 
 // Phi is Pan.
 qreal
-PolarPoint::pan()
+PolarPoint::tilt()
 {
     return qRadiansToDegrees(m_phi);
 }
 
 void
-PolarPoint::setPan(const qreal degrees)
+PolarPoint::setTilt(const qreal degrees)
 {
     m_phi = qDegreesToRadians(degrees);
 }
 
 PolarPoint
-PolarPoint::toPoint(const PolarPoint &point)
+PolarPoint::toPoint(PolarPoint point)
 {
 
     // We need to do a few things here to calculate the most optimal solution.
@@ -76,7 +76,9 @@ PolarPoint::toPoint(const PolarPoint &point)
     // to transform to find cleanest solution.
     // Theta = pan, phi = tilt
     // Pan will be phi_cal - phi_trans
-    qreal newTilt = phi() - point.phi();
+    qDebug() << "CALCULATRING:";
+    qDebug() << "This point pan: " << pan() << " Other point pan: " << point.pan();
+    qreal newPan = phi() - point.phi();
     //TODO: Do we need to worry about pan boundries?
 //    qDebug() << "New Tilt: "
 //    if(newTilt > maxTilt()|| newTilt < minTilt())
@@ -85,8 +87,8 @@ PolarPoint::toPoint(const PolarPoint &point)
 //    }
 
     // Tilt will be theta_cal - theta_trans
-    qreal newPan = theta() - point.theta();
-    qDebug() << "Original pan calc: " << newPan << " max pan " << m_maxPan << " min pan " << m_minPan;
+    qreal newTilt = theta() - point.theta();
+//    qDebug() << "Original pan calc: " << newPan << " max pan " << m_maxPan << " min pan " << m_minPan;
     // Need to use the members to get radians.  THe accessors convert to degrees.
     // TODO: Rethink this to suck less
     if( (newPan > m_maxPan) || (newPan < m_minPan))
